@@ -6,7 +6,7 @@ Runs slow queries for populating queries in the Profiler and the Performance Adv
 1. Load Atlas sample data
   - You need to have loaded the Atlas sample data into your cluster. If your cluster doesn't have this data, follow the instructions in https://docs.atlas.mongodb.com/sample-data/load-sample-data/ 
 2. Create Stitch app
-  - Create a Stitch app and use the default settings. Do *NOT* change the Stitch Service Name. Otherwise you'll have to 
+  - Create a Stitch app and use the default settings. Do **NOT** change the Stitch Service Name. Otherwise you'll have to 
   change this later on in the *runSlowQueries* function. For more information on how to create a Stitch app, see: 
   https://docs.mongodb.com/stitch/procedures/create-stitch-app/
   - Open the Stitch app manually if you don't get redirected automatically after creation of the app
