@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Slow running query generator</title>
+  <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.4.0/stitch.js"></script>
+</head>
+<body>
+  <h1>Slow running query generator</h1>
+  <img src="https://media2.giphy.com/media/PLsbyZkfc1z0VMqGaN/giphy.gif?cid=790b7611c90d3b3d327e01fb04366117df02ee2467ca7dfe&rid=giphy.gif" style="height: 300px;" />
+  <h2>Activity log:</h2>
+  <div id="activity-log"></div>
+  <script>
+    const STITCH_APP_ID = 'slowqueries-rnkar';
+
+    // Initialize the App Client
+    const client = stitch.Stitch.initializeDefaultAppClient(STITCH_APP_ID);
+    // Login using ananymous credentials
+    client.auth
+      .loginWithCredential(new stitch.AnonymousCredential())
+      .then(setTimeout(() => runSlowQueries(), 1000))
+      .catch(err => logActivity(err, 'error'));
+
+    async function runSlowQueries() {
+      let err = '';
+      while(!err) {
+        logActivity('running slow query...');
+        await client.callFunction('runSlowQueries', [])
+          .then(result => logActivity(result.message, result.type))
+          .catch(_err => {
+            err = _err.message;
+            logActivity(err, 'error');
+            logActivity('stopped running queries. refresh page to restart', 'error');
+          });
+      }
+    }
+    
+    function logActivity(message, type) {
+      const newActivity = document.createElement('p');
+      const textNode = document.createTextNode(message);
+      newActivity.appendChild(textNode);
+
+      if (type === 'error') {
+        newActivity.style.cssText = 'color: red';
+      }
+
+      const activityLog = document.getElementById('activity-log');
+      if (activityLog.childNodes.length > 4) {
+        activityLog.removeChild(activityLog.lastChild);
+      }
+      activityLog.insertBefore(newActivity, activityLog.childNodes[0]); 
+    }
+  </script>
+</body>
+</html>
