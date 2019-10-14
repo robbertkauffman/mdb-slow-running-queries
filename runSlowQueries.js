@@ -91,7 +91,7 @@ function weatherDataQuery(mongodb) {
   ];
 
   return db.collection('data')
-    .aggregate(pipeline)
+    .aggregate(pipeline, { allowDiskUse: true })
     .toArray()
     .then(docs => { return { message: `found ${docs.length} docs`, type: 'activity' }})
     .catch(err => { return { message: err.message, type: 'error' }});
